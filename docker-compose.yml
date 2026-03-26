@@ -1,0 +1,9 @@
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/storage:/app/backend/storage
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}

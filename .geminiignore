@@ -1,0 +1,9 @@
+Gemini chatgpt res.txt  
+Gemini CLI session.txt   
+/venv/
+.env
+
+
+# Exclude all .md files except GEMINI.md
+*.md
+!GEMINI.md

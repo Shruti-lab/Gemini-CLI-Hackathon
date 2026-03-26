@@ -1,0 +1,8 @@
+venv
+.env
+
+Gemini chatgpt res.txt
+Gemini CLI session.txt
+
+**/__pycache__
+**/*.pyc

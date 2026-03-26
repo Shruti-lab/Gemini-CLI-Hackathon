@@ -1,0 +1,14 @@
+{
+    "v1": {
+        "version_id": "v1",
+        "original_filename": "test_v1.xlsx",
+        "file_path": "backend/storage/files/v1_test_v1.xlsx",
+        "timestamp": "2026-03-26T10:21:58.470674"
+    },
+    "v2": {
+        "version_id": "v2",
+        "original_filename": "test_v2.xlsx",
+        "file_path": "backend/storage/files/v2_test_v2.xlsx",
+        "timestamp": "2026-03-26T10:22:07.249270"
+    }
+}
