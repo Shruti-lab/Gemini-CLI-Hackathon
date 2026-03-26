@@ -6,3 +6,5 @@ Gemini CLI session.txt
 
 **/__pycache__
 **/*.pyc
+
+tests_report.pdf

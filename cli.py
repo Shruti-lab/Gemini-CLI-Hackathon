@@ -51,8 +51,10 @@ def compare(v1, v2):
 @click.option('--question', '-q', help='Natural language query')
 def insights(v1, v2, question):
     """Get AI-generated insights for two versions."""
-    url = f"{BASE_URL}/ask"
-    payload = {"v1": v1, "v2": v2, "question": question}
+    # Use the v1 API for insights and questions
+    url = f"{BASE_URL}/api/v1/ask"
+    # Map to the new request schema for Karate-style compatibility
+    payload = {"file1Url": v1, "file2Url": v2, "query": question or "Analyze these changes and provide insights."}
     try:
         response = requests.post(url, json=payload)
         if response.status_code == 200:
