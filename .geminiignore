@@ -7,3 +7,4 @@ Gemini CLI session.txt
 # Exclude all .md files except GEMINI.md
 *.md
 !GEMINI.md
+!README.md
