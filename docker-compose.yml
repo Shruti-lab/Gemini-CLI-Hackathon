@@ -6,4 +6,4 @@ services:
     volumes:
       - ./backend/storage:/app/backend/storage
     environment:
-      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
