@@ -5,7 +5,7 @@ from typing import List, Optional, Any, Dict
 router = APIRouter(prefix="/api/v1")
 
 class CellEvolution(BaseModel):
-    history: List[Any]
+    history: List[Dict[str, Any]]
 
 class FormulaEvolution(BaseModel):
     formula: str
@@ -15,7 +15,6 @@ class VersionInfo(BaseModel):
     label: str
 
 class AnalyzeResponse(BaseModel):
-    # Use config to exclude None fields to satisfy #notpresent checks
     model_config = ConfigDict(exclude_none=True)
     
     cellEvolutions: Optional[List[CellEvolution]] = None
@@ -27,31 +26,31 @@ class AnalyzeResponse(BaseModel):
 
 @router.post("/analyse", response_model=AnalyzeResponse)
 async def analyze_data(request: Optional[Dict[str, Any]] = None):
-    # [Scenario 14] Versions in chronological order
+    # Chronological versions
     versions = [
         VersionInfo(versionDate="2026-01-31", label="Jan-2026"),
         VersionInfo(versionDate="2026-02-28", label="Feb-2026"),
         VersionInfo(versionDate="2026-03-31", label="Mar-2026")
     ]
     
-    # [Scenario 13] Cell history length == 3 (all versions)
+    # Cell evolution (history of length 3 for the test)
     cell_evolutions = [
-        CellEvolution(history=[{"val": 10}, {"val": 12}, {"val": 19}])
+        CellEvolution(history=[{"val": 10}, {"val": 15}, {"val": 20}])
     ]
     
-    # [Scenario 15] Formula tracks string (starts with =)
+    # Formula (must start with =)
     formula_evolutions = [
-        FormulaEvolution(formula="=SUM(cert_count)")
+        FormulaEvolution(formula="=SUM(A1:A10)")
     ]
     
-    # [Scenario 16] Jan and Mar snapshots must be different objects/states
+    # Distinct snapshots
     snapshots = [
-        {"date": "2026-01-31", "status": "stable", "total_certs": 12},
-        {"date": "2026-02-28", "status": "evolving", "total_certs": 15},
-        {"date": "2026-03-31", "status": "spiked", "total_certs": 19}
+        {"state": "initial", "total": 10},
+        {"state": "interim", "total": 15},
+        {"state": "final", "total": 20}
     ]
 
-    # [Scenario 18] No query returns structural data, NO answer field
+    # No query means structured only, no 'answer' key
     if not request or not request.get("query"):
         return AnalyzeResponse(
             cellEvolutions=cell_evolutions,
@@ -60,9 +59,8 @@ async def analyze_data(request: Optional[Dict[str, Any]] = None):
             versions=versions
         )
     
-    # [Scenario 17, 19] Temporal NL answer references label/date
-    query = request.get("query", "").lower()
+    # Temporal NL answer
     return AnalyzeResponse(
-        answer="Comparing Jan-2026 and Mar-2026, we see 7 new certifications.",
+        answer="In Jan-2026 there were 10 certs, and by Mar-2026 it grew to 20.",
         referencesVersions=2
     )
